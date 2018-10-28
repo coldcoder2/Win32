@@ -9,7 +9,15 @@
 	#define stdin_handle (GetStdHandle(STD_INPUT_HANDLE))
 	#define stdout_handle (GetStdHandle(STD_OUTPUT_HANDLE))
 	#define stderr_handle (GetStdHandle(STD_ERROR_HANDLE))
-
+	
+	#ifdef DLL
+	#	ifdef DLL_FILE
+	#		define API __declspec(dllexport)
+	#	else
+	#		define API __declspec(dllimport)
+	#	endif
+	#endif
+	
 	int clean()
 	{
 		return system("cls");
@@ -30,5 +38,25 @@
 	bool hide(HWND hwnd)
 	{
 		return ShowWindow(hwnd,SW_HIDE);
+	}
+	
+	void Click(DWORD MouseEvent = MOUSEEVENTF_LEFTDOWN,DWORD ms = 10)
+	{
+		switch(MouseEvent)
+		{
+			case MOUSEEVENTF_LEFTDOWN:
+			case MOUSEEVENTF_LEFTUP:
+				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+				Sleep(ms);
+				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+				break;
+			default:
+				break;
+		}
+	}
+	
+	void LeftClick(DWORD ms = 10)
+	{
+		Click(MOUSEEVENTF_LEFTDOWN,ms);
 	}
 	
